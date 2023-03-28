@@ -1,17 +1,14 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Res } from '@nestjs/common';
 import { Delete, Patch } from '@nestjs/common/decorators';
 import { AppService } from 'src/app.service';
+import { CoursesService } from './courses.service';
 
 @Controller('courses')
 export class CoursesController {
 
-    constructor(private readonly appService: AppService) {}
+    constructor(private readonly coursesService: CoursesService) {}
 
-    @Get()
-    getOla(@Res() response): string {
-        return this.appService.getOla();
-    }
-
+    
     @Get('list')
     listAll(@Res() response): string {
         return response.status(200).send('Listagem curso')
