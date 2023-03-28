@@ -5,4 +5,8 @@ export class AppService {
   getHello(): string {
     return 'John Mota';
   }
+
+  getOla(): string {
+    return `Olá ${this.getHello()}`
+  }
 }
