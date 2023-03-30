@@ -48,4 +48,6 @@ export class CoursesService {
             this.courses.splice(indexCourse, 1);
         }
     }
+
+    // ===
 }
