@@ -2,7 +2,7 @@ import { Column, Entity, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn } fro
 import { Course } from "./course.entity";
 
 @Entity('tags')
-export class TagEntity {
+export class Tag {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -13,3 +13,4 @@ export class TagEntity {
     @ManyToMany(() => Course, (course) => course.tags)
     courses: Course[];
 }
+

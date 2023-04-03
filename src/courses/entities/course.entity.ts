@@ -1,5 +1,5 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { TagEntity } from "./tags.entity";
+import { Tag } from "./tags.entity";
 
 @Entity('courses')
 export class Course {
@@ -14,6 +14,10 @@ export class Course {
     description: string;
 
     @JoinTable()
-    @ManyToMany( type => TagEntity, (tag) => tag.courses)
-    tags: string[];
+    @ManyToMany( () => Tag, (tag) => tag.courses, {
+        cascade: true
+    })
+   
+
+    tags: Tag[];
 }

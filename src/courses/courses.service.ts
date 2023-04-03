@@ -1,5 +1,6 @@
 import {Injectable, NotFoundException } from '@nestjs/common';
 import { Course } from './entities/course.entity';
+import { Tag } from './entities/tags.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCourseDto } from './dto/create-course.dto/create-course.dto';
@@ -13,7 +14,10 @@ export class CoursesService {
     
     constructor(
         @InjectRepository(Course)
-        private readonly courseRepository: Repository<Course>
+        private readonly courseRepository: Repository<Course>,
+
+        @InjectRepository(Tag)
+        private readonly tagrepository: Repository<Tag>
     ) {}
 
     findAll() {
@@ -29,15 +33,27 @@ export class CoursesService {
         return course;
     }
 
-    create(createCourseDto: CreateCourseDto) {
-        const course = this.courseRepository.create(createCourseDto)
+    async create(createCourseDto: CreateCourseDto) {
+        const tags = await Promise.all(
+            createCourseDto.tags.map(name => this.preloadtagByName(name))
+        );
+        const course = this.courseRepository.create({
+            ...createCourseDto,
+            tags
+        })
         return this.courseRepository.save(course)
     }
 
     async update(id: string, updateCourseDto: UpdateCourseDto) {
+        const tags = 
+        updateCourseDto.tags && 
+        (await Promise.all(
+            updateCourseDto.tags.map((name) => this.preloadtagByName(name)),
+        ));
         const course = await this.courseRepository.preload({
             id: +id,
-            ... updateCourseDto,
+            ...updateCourseDto,
+            tags,
         });
 
         if(!course) {
@@ -66,6 +82,16 @@ export class CoursesService {
         }
 
         return this.courseRepository.remove(course);
+    }
+
+    private async preloadtagByName(name: string): Promise<Tag>{
+        const tag = await this.tagrepository.findOne({name});
+
+        if(tag) {
+            return tag;
+        }
+
+        return this.tagrepository.create({ name });
     }
 
 
