@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 
 import { CoursesController } from './courses.controller';
 import { CoursesService } from './courses.service';
-import { UpdateCourseDto } from './dto/update-course.dto/update-course.dto';
-import { CreateCourseDto } from './dto/create-course.dto/create-course.dto';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Course } from './entities/course.entity';
 
 @Module({
-    imports: [],
+    imports: [ TypeOrmModule.forFeature([Course])],
     controllers: [ CoursesController],
     providers: [ CoursesService]
 })
