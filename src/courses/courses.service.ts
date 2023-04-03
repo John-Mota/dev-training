@@ -17,15 +17,19 @@ export class CoursesService {
         private readonly courseRepository: Repository<Course>,
 
         @InjectRepository(Tag)
-        private readonly tagrepository: Repository<Tag>
+        private readonly tagRepository: Repository<Tag>
     ) {}
 
     findAll() {
-        return this.courseRepository.find();
+        return this.courseRepository.find({
+            relations: ['tags']
+        });
     }
 
     findOne(id: string) {
-        const course = this.courseRepository.findOne(id)
+        const course = this.courseRepository.findOne(id, {
+            relations: ['tags']
+        })
 
         if(!course) {
             throw new NotFoundException(`Course ID ${id} NOT FOUND`)};
@@ -69,7 +73,7 @@ export class CoursesService {
 
         course.name = updateCourseDto.name;
         course.description = updateCourseDto.description;
-        course.tags = updateCourseDto.tags;
+        course.tags = tags;
 
         return this.courseRepository.save(course);
     }
@@ -85,13 +89,13 @@ export class CoursesService {
     }
 
     private async preloadtagByName(name: string): Promise<Tag>{
-        const tag = await this.tagrepository.findOne({name});
+        const tag = await this.tagRepository.findOne({name});
 
         if(tag) {
             return tag;
         }
 
-        return this.tagrepository.create({ name });
+        return this.tagRepository.create({ name });
     }
 
 
