@@ -3,7 +3,7 @@ version: '3'
 services:
   app:
     build: .
-    entrypoint: .docker/entrypoint.sh
+    entrypoint: .docker/entrypoint.sh 
     container_name: cursonestjs-app
     ports:
       - "3000:3000"
@@ -11,6 +11,8 @@ services:
       - .:/home/node/app
     depends_on:
       - db
+    environment:
+      - DATABASE_URL=postgres://postgres:docker@db:5432/cursonestjs
 
   db:
     build: .docker/postgres
@@ -20,11 +22,10 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - .docker/dbdata:/var/lib/postgressql/data
+      - .docker/dbdata:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DOCKER=docker
-      - POSTGRES_DB=cursonestjs
       - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=cursonestjs
 
   pgadmin:
     image: dpage/pgadmin4
