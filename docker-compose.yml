@@ -10,11 +10,11 @@ services:
     volumes:
       - .:/home/node/app
     depends_on:
-      - db
+      - localhost
     environment:  
       - DATABASE_URL=postgres://postgres:docker@db:5432/cursonestjs
 
-  db:
+  localhost:
     build: .docker/postgres
     container_name: cursonestjs-db
     restart: always
@@ -37,4 +37,4 @@ services:
     ports:
       - "8000:80"
     depends_on:
-      - db
+      - localhost
