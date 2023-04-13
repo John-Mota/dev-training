@@ -14,7 +14,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     password: 'docker',
     database: 'cursonestjs',
     autoLoadEntities: true,
-    synchronize: false
+    synchronize: false,
+    entities: []
   })],
   controllers: [AppController],
   providers: [AppService],

@@ -11,7 +11,7 @@ services:
       - .:/home/node/app
     depends_on:
       - db
-    environment:
+    environment:  
       - DATABASE_URL=postgres://postgres:docker@db:5432/cursonestjs
 
   db:
@@ -20,7 +20,7 @@ services:
     restart: always
     tty: true
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - .docker/dbdata:/var/lib/postgresql/data
     environment:
