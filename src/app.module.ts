@@ -15,7 +15,7 @@ import { ConfigModule } from '@nestjs/config';
     password: 'docker',
     database: 'cursonestjs',
     autoLoadEntities: true,
-    synchronize: true,
+    synchronize: false,
     entities: []
   })],
   controllers: [AppController],
