@@ -14,9 +14,10 @@ import { ConfigModule } from '@nestjs/config';
     username: 'postgres',
     password: 'docker',
     database: 'cursonestjs',
-    autoLoadEntities: true,
+    entities: [__dirname + '/**/*.entity.js'],
+    autoLoadEntities: false,
     synchronize: false,
-    entities: []
+    
   })],
   controllers: [AppController],
   providers: [AppService],

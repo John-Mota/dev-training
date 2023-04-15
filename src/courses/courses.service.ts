@@ -21,7 +21,7 @@ export class CoursesService {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const course = await this.courseRepository.findOne({ where: { id }, relations: ['tags'] });
 
 
@@ -50,7 +50,7 @@ export class CoursesService {
         updateCourseDto.tags.map((name) => this.preloadtagByName(name)),
       ));
     const course = await this.courseRepository.preload({
-      id: +id,
+      id: id,
       ...updateCourseDto,
       tags,
     });
@@ -77,7 +77,7 @@ export class CoursesService {
     return this.courseRepository.save(course);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     if (typeof id !== 'number') {
       throw new BadRequestException('Invalid ID provided');
     }

@@ -1,8 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 
-export class CreateCourseTable1681429908365 implements MigrationInterface {
+export class CreateCoursesTable1681508748866 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
+        
         await queryRunner.createTable(new Table({
             name: 'courses',
             columns: [
@@ -23,7 +25,7 @@ export class CreateCourseTable1681429908365 implements MigrationInterface {
                     name: 'created_at',
                     type: 'timestamp',
                     default: 'CURRENT_TIMESTAMP'
-                }
+                },
             ]
         }));
     }
@@ -31,5 +33,8 @@ export class CreateCourseTable1681429908365 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.dropTable('courses');
     }
-
 }
+
+    
+
+

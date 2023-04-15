@@ -13,7 +13,7 @@ export class CoursesController {
   }
 
   @Get(':id')
-  getId(@Param('id', ParseIntPipe) id: number) {
+  getId(@Param('id', ParseIntPipe) id: string) {
     return this.coursesService.findOne(id);
   }
 
@@ -28,7 +28,7 @@ export class CoursesController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.coursesService.remove(id);
   }
 }

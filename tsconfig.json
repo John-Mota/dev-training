@@ -18,7 +18,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src", "src/migrations"],
+  "include": ["src", "src/migrations", "src/data-source.ts"],
   "exclude": [
     "node_modules",
     "build",
