@@ -9,9 +9,11 @@ import { UpdateCourseDto } from './dto/update-course.dto/update-course.dto';
 @Injectable()
 export class CoursesService {
   constructor(
-    @InjectRepository(Course)
-    private readonly courseRepository: Repository<Course>,
-    
+      @Inject('COURSES_REPOSITORY')
+    private courseRepository: Repository<Course>,
+
+    @Inject('TAGS_REPOSITORY')
+    private tagRepository: Repository<Tag>
   ) {}
 
   async findAll() {
@@ -93,14 +95,14 @@ export class CoursesService {
   
 
   private async preloadtagByName(name: string): Promise<Tag> {
-    const tagRepository = getRepository(Tag);
-    const tag = await tagRepository.findOne({ where: { name } });
+    
+    const tag = await this.tagRepository.findOne({ where: { name } });
   
     if (tag) {
       return tag;
     }
   
-    return tagRepository.create({ name });
+    return this.tagRepository.create({ name });
   }
   
 }
