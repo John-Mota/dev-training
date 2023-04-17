@@ -3,22 +3,25 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoursesModule } from './courses/courses.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from './database/database.module';
+
 
 
 @Module({
-  imports: [ CoursesModule, ConfigModule.forRoot() ,TypeOrmModule.forRoot({
+  imports: [ CoursesModule,
+    TypeOrmModule.forRoot({
     type: 'postgres',
-    host: 'db',
+    host: 'localhost',
     port: 5432,
     username: 'postgres',
     password: 'docker',
-    database: 'cursonestjs',
+    database: 'postgres',
     entities: [__dirname + '/**/*.entity.js'],
-    autoLoadEntities: false,
-    synchronize: false,
-    
-  })],
+    autoLoadEntities: true,
+    synchronize: true,
+    }),
+    DatabaseModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

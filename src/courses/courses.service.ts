@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { Course } from './entities/course.entity';
 import { Tag } from './entities/tags.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,18 +11,19 @@ export class CoursesService {
   constructor(
     @InjectRepository(Course)
     private readonly courseRepository: Repository<Course>,
-    @InjectRepository(Tag)
-    private readonly tagRepository: Repository<Tag>,
+    
   ) {}
 
-  findAll() {
+  async findAll() {
     return this.courseRepository.find({
       relations: ['tags'],
     });
   }
 
-  async findOne(id: string) {
-    const course = await this.courseRepository.findOne({ where: { id }, relations: ['tags'] });
+  async findOne(id: number) {
+    const course = await this.courseRepository.findOne({ 
+      where: { id }, 
+      relations: ['tags'] });
 
 
     if (!course) {
@@ -43,7 +44,7 @@ export class CoursesService {
     return this.courseRepository.save(course);
   }
 
-  async update(id: string, updateCourseDto: UpdateCourseDto) {
+  async update(id: number, updateCourseDto: UpdateCourseDto) {
     const tags =
       updateCourseDto.tags &&
       (await Promise.all(
@@ -77,12 +78,10 @@ export class CoursesService {
     return this.courseRepository.save(course);
   }
 
-  async remove(id: string) {
-    if (typeof id !== 'number') {
-      throw new BadRequestException('Invalid ID provided');
-    }
-  
-    const course = await this.courseRepository.findOne({ where: { id } });
+  async remove(id: number) {
+
+    const course = await this.courseRepository.findOne({ 
+      where: { id } });
 
   
     if (!course) {
